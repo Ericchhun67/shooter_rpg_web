@@ -49,3 +49,5 @@ From the parent directory, run:
 ```bash
 python -m pygbag shooter_rpg_web
 ```
+
+Then open `http://localhost:8000`.
