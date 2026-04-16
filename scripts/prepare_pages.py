@@ -13,11 +13,8 @@ def main() -> None:
         raise SystemExit("Missing build/web output. Run `python -m pygbag --build --html .` first.")
 
     html_files = sorted(web_dir.glob("*.html"))
-    archive_files = sorted(web_dir.glob("*.tar.gz"))
     if not html_files:
         raise SystemExit("No HTML launcher found in build/web.")
-    if not archive_files:
-        raise SystemExit("No game archive found in build/web.")
 
     dist_dir.mkdir(parents=True, exist_ok=True)
     for existing in dist_dir.iterdir():
@@ -27,9 +24,15 @@ def main() -> None:
             existing.unlink()
 
     launcher = html_files[0]
-    archive = archive_files[0]
-    shutil.copy2(launcher, dist_dir / "index.html")
-    shutil.copy2(archive, dist_dir / archive.name)
+    for source in web_dir.iterdir():
+        target = dist_dir / source.name
+        if source.is_dir():
+            shutil.copytree(source, target)
+        else:
+            shutil.copy2(source, target)
+
+    if launcher.name != "index.html":
+        shutil.copy2(launcher, dist_dir / "index.html")
 
     # Mirror the launcher for direct error-page refreshes on static hosting.
     shutil.copy2(launcher, dist_dir / "404.html")
