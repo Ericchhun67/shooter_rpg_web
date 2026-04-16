@@ -9,6 +9,12 @@ SAVE_FILE = Path(__file__).resolve().parent.parent / "savegame.json"
 
 
 def save_exists() -> bool:
+    """ 
+    check if a save file exists by verifying if the game's save file exists in the 
+    expected location. It returns True if the save file is found, indicating that there is
+    a saved game available, and False if the save file does not exist, indicating that 
+    there is no saved game to load.
+    """
     return SAVE_FILE.exists()
 
 

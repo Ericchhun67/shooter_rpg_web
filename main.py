@@ -4,6 +4,9 @@ import asyncio
 import sys
 from pathlib import Path
 
+# Set up the pthon path to include the root directory of the project for imports
+# try-except block to handle any potential issues with modifying the python path, 
+# such as permission errors to access the file system or issues with the __file__ attribute
 try:
 # Ensure the root directory itself is in the Python path for imports
     ROOT_DIR = Path(__file__).resolve().parent
@@ -19,19 +22,17 @@ import pygame
 from game.game import RiftbreakerGame
 
 
-class GameError(Exception):
-    """Custom exception for game-related errors."""
-    pass
 
-
+# Function to display the FPS counter on the screen
 def display_fps(screen: pygame.Surface, clock: pygame.time.Clock, font: pygame.font.Font) -> None:
     """ 
     Display the FPS counter on the top-left corner of the screen. 
     """
-    fps = int(clock.get_fps())
-    fps_text = font.render(f"FPS: {fps}", True, (255, 255, 255))
+    fps = int(clock.get_fps()) # Get the current frames per second from the clock
+    fps_text = font.render(f"FPS: {fps}", True, (255, 255, 255)) # Render the FPS text using the provided font
     panel = pygame.Surface((fps_text.get_width() + 16, fps_text.get_height() + 10), pygame.SRCALPHA)
-    panel.fill((0, 0, 0, 140))
+    panel.fill((0, 0, 0, 140)) # Create a semi-transparent black panel to improve readability
+    # blit the panel and the FPS text onto the screen at the top-left corner with some padding
     screen.blit(panel, (8, 8))
     screen.blit(fps_text, (16, 13))
  
@@ -54,6 +55,8 @@ async def main() -> None:
             await asyncio.sleep(0)
         pygame.quit() # Clean up and exit the game
     except Exception as e:
+        # Catch any exceptions that occur during the game loop and print an error
+        # message to the console, then quit the game gracefully
         print(f"An error occurred: {e}")
         pygame.quit()
 
