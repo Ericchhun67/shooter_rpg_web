@@ -14,6 +14,7 @@ from __future__ import annotations
 import io
 import math
 import random
+import sys
 import wave
 from array import array
 
@@ -54,6 +55,9 @@ class MusicManager:
         self.current_track: str | None = None
         self.tracks: dict[str, pygame.mixer.Sound] = {}
         self.effects: dict[str, pygame.mixer.Sound] = {}
+        self.web_disabled = sys.platform == "emscripten"
+        if self.web_disabled:
+            return
         # handle errors that may occur during mixer initialization, such as missing
         # audio hardware or unsupported audio formats, and ensure that the music manager
         # can gracefully degrade by marking itself as unavailable and preventing
