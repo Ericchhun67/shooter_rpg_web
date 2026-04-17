@@ -35,7 +35,10 @@ jobs:
           python -m pip install -r requirements.txt
 
       - name: Build Browser Version
-        run: python -m pygbag --build --html .
+        run: |
+          REPO_DIR="$(basename "$GITHUB_WORKSPACE")"
+          cd "$(dirname "$GITHUB_WORKSPACE")"
+          python -m pygbag --build --html "$REPO_DIR"
 
       - name: Prepare Pages Files
         run: python scripts/prepare_pages.py
